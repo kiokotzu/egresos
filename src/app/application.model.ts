@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
-import { ActiveLoadingAction, DeactiveLoadingAction } from './store/actions/ui.acctions';
-import { ApplicationState } from './store/state/application.state';
-import { User } from './auth/user';
+import { ActiveLoadingAction, DeactiveLoadingAction } from './core/store/actions/ui.acctions';
+import { ApplicationState } from './core/store/state/application.state';
+import { User } from './modules/auth/user';
 
 @Injectable()
 export class ApplicationModel {

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { AuthModel } from '../../auth/auth.model';
-import { User } from '../../auth/user';
+import { AuthModel } from '../../modules/auth/auth.model';
+import { User } from '../../modules/auth/user';
 
 @Component({
   selector: 'app-navbar',
