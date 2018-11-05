@@ -1,17 +1,14 @@
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable, Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { isNullOrUndefined } from 'util';
 import * as firebase from 'firebase';
 import { map } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
 
-import { User } from '../auth/user.model';
-import { AppState } from '../store/recuders/app.reducer';
-import { ActiveLoadingAction, DeactiveLoadingAction } from '../store/actions/ui.acctions';
-import { SetUserAction } from '../store/actions/auth.action';
+import { AuthModel } from '../auth/auth.model';
+import { User } from '../auth/user';
 
 
 @Injectable({
@@ -20,12 +17,13 @@ import { SetUserAction } from '../store/actions/auth.action';
 export class AuthService {
 
   private userSubcription: Subscription = new Subscription();
+  private user: User;
 
   constructor(
     private afAuth: AngularFireAuth,
     private router: Router,
     private afDB: AngularFirestore,
-    private store: Store<AppState>
+    private model: AuthModel
   ) { }
 
   public initAuthListener(): void {
@@ -33,9 +31,11 @@ export class AuthService {
       if (!isNullOrUndefined(user)) {
         this.userSubcription = this.afDB.doc(`${user.uid}/user`).valueChanges().subscribe((value: User) => {
           const userObject = new User(value);
-          this.store.dispatch(new SetUserAction(userObject));
+          this.model.fetchSetUser(userObject);
+          this.user = userObject;
         });
       } else {
+        this.user = null;
         this.userSubcription.unsubscribe();
       }
     });
@@ -43,7 +43,7 @@ export class AuthService {
 
   public createUser(name: string, email: string, password: string) {
 
-    this.store.dispatch(new ActiveLoadingAction());
+    this.model.fetchActiveLoading();
 
     this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then( data => {
@@ -58,27 +58,28 @@ export class AuthService {
           .set(user)
           .then(() => {
             this.router.navigate(['/']);
-            this.store.dispatch(new DeactiveLoadingAction());
+            this.model.fetchDeactiveLoading();
           });
 
       })
-      .catch( err => this.store.dispatch(new DeactiveLoadingAction()));
+      .catch( err => this.model.fetchDeactiveLoading());
   }
 
   public login(email: string, password: string) {
-    this.store.dispatch(new ActiveLoadingAction());
+    this.model.fetchActiveLoading();
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then( data => {
         console.log(data);
         this.router.navigate(['/dashboard']);
-        this.store.dispatch(new DeactiveLoadingAction());
+        this.model.fetchDeactiveLoading();
       })
-      .catch( err => this.store.dispatch(new DeactiveLoadingAction()));
+      .catch( err => this.model.fetchDeactiveLoading());
   }
 
   public logout(): void {
     this.afAuth.auth.signOut();
     this.router.navigate(['/login']);
+    this.model.unSetUser();
   }
 
   public isAuth(): Observable<boolean> {
@@ -91,6 +92,10 @@ export class AuthService {
           return !isNullOrUndefined(user);
         })
       );
+  }
+
+  public getUser(): User {
+    return {...this.user};
   }
 
 }

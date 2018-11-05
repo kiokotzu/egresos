@@ -1,15 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { AuthModel } from '../../auth/auth.model';
+import { User } from '../../auth/user';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
-  constructor() { }
+  constructor(private model: AuthModel) { }
 
-  ngOnInit() {
+  get dataUser$(): Observable<User> {
+    return this.model.user$;
   }
 
 }

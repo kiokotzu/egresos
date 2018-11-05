@@ -14,13 +14,23 @@
             <th></th>
           </tr>
           </thead>
-
           <tbody>
-          <tr>
-            <td>Descripción</td>
-            <td>Monto</td>
-            <td>Tipo</td>
-            <td>acciones</td>
+          <tr *ngFor="let item of (ingresoEgresos$ | async) | ingresoEgreso">
+            <td>{{item.description}}</td>
+            <td>{{item.count | currency}}</td>
+            <td>
+              <span [ngClass]="{
+                                'text-success': item.type === 'ingreso',
+                                 'text-danger': item.type === 'egreso' }">
+                {{item.type}}
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-danger" (click)="deleteItem(item.uid)">
+                <i class="fa fa-trash"></i>
+                Borrar
+              </button>
+            </td>
           </tr>
           </tbody>
 
@@ -31,4 +41,4 @@
     </div>
   </div>
 </div>
-  
+

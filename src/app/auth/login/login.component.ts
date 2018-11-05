@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { AuthService } from '../../services/auth.service';
 import { AuthModel } from '../auth.model';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',

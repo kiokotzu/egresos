@@ -1,15 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+import { IngresoEgresoService } from '../../services/ingreso-egreso.service';
+import { IngresoEgresoModel } from '../ingreso-egreso.model';
+import { IngresoEgreso } from '../ingreso-egreso';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
-export class DetailComponent implements OnInit {
+export class DetailComponent {
 
-  constructor() { }
+  constructor(
+    private model: IngresoEgresoModel,
+    private ingresoEgresoService: IngresoEgresoService
+  ) { }
 
-  ngOnInit() {
+  get ingresoEgresos$(): Observable<IngresoEgreso[]> {
+    return this.model.ingresoEgresoItems$;
+  }
+
+  public deleteItem(uid: string): void {
+    this.ingresoEgresoService.deleteItem(uid);
   }
 
 }

@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { AuthService } from '../../services/auth.service';
-import { AuthModel } from '../auth.model';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+
+import { ApplicationModel } from '../../application.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private model: AuthModel
+    private model: ApplicationModel
     ) { }
 
   ngOnInit(): void {
