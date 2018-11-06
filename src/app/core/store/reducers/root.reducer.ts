@@ -1,9 +1,6 @@
-import { global } from './globals/index';
-import { models } from './models/index';
-import { ui } from './ui/index';
-
-
-import { INITIAL_APPLICATION_STATE } from '../state/application.state';
+import { global } from './globals';
+import { models } from './models';
+import { ui } from './ui';
 
 const reducers = {
   global: global,
