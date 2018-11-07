@@ -7,5 +7,6 @@ export const environment = {
     projectId: 'login-egresos',
     storageBucket: 'login-egresos.appspot.com',
     messagingSenderId: '777529251233'
-  }
+  },
+  imports: []
 };

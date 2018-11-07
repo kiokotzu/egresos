@@ -7,11 +7,12 @@ import { AuthService } from './auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate {
+export class LoginGuardService implements CanActivate {
 
   constructor(private router: Router, private authService: AuthService) { }
 
   canActivate(): Observable<boolean> {
-    return this.authService.isAuth();
+    return this.authService.loginAuth();
   }
+
 }

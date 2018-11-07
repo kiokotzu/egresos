@@ -1,5 +1,4 @@
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { BrowserModule } from '@angular/platform-browser';
 import { StoreModule, INITIAL_STATE } from '@ngrx/store';
 import { NgModule, InjectionToken } from '@angular/core';
@@ -29,10 +28,7 @@ export const REDUCER_TOKEN = new InjectionToken('Registered Reducers');
     AngularFireModule.initializeApp(ENV.firebase),
     AngularFirestoreModule,
     StoreModule.forRoot(REDUCER_TOKEN),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: ENV.production
-    })
+    ENV.imports
   ],
   providers: [
     ApplicationModel,

@@ -69,7 +69,6 @@ export class AuthService {
     this.model.fetchActiveLoading();
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then( data => {
-        console.log(data);
         this.router.navigate(['/dashboard']);
         this.model.fetchDeactiveLoading();
       })
@@ -90,6 +89,18 @@ export class AuthService {
             this.router.navigate(['/login']);
           }
           return !isNullOrUndefined(user);
+        })
+      );
+  }
+
+  public loginAuth(): Observable<boolean> {
+    return this.afAuth.authState
+      .pipe(
+        map(user => {
+          if (!isNullOrUndefined(user)) {
+            this.router.navigate(['/']);
+          }
+          return isNullOrUndefined(user);
         })
       );
   }
